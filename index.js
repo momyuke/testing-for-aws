@@ -3,8 +3,8 @@ const app = express();
 const http = require('http');
 const dbConn = require('./dbConn');
 
-app.get('/department', (req,res,next) => {
-    dbConn.query('SELECT * FROM DEPARTMENT', function (err, result, field) {
+app.get('/employee/sabar', (req,res,next) => {
+    dbConn.query('SELECT * FROM department ', function (err, result, field) {
         res.json(result);
     });
 });
