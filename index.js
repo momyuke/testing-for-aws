@@ -1,19 +1,35 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const dbConn = require('./dbConn');
 
-app.get('/', (req,res,next) => {
-    let data = {message : 'this is example message for EC2 AWS'}
-    res.json(data);
+app.get('/department', (req,res,next) => {
+    dbConn.query('SELECT * FROM DEPARTMENT', function (err, result, field) {
+        res.json(result);
+    });
+});
+app.get('/employee', (req,res,next) => {
+    dbConn.query('SELECT * FROM employee', function (err, result, field) {
+        res.json(result);
+    });
 });
 
 const server = http.createServer(app);
 
-server.listen(4000, '0.0.0.0', function(){
-    if(server.listening){
-        console.log('server has been on at port 4000')
+
+dbConn.connect(function (err){
+    if(err){
+        console.log(err);
+        process.exit(1)
+    }else{
+        server.listen(4000, '0.0.0.0', function(){
+            if(server.listening){
+                console.log('server has been on at port 4000')
+            }
+        });
     }
-});
+})
+
 
 server.on('error', (err) => {
     console.log(err);
