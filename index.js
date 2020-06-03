@@ -6,7 +6,6 @@ const AWS = require('aws-sdk');
 const dotenv = require('dotenv');
 
 dotenv.config();
-AWS.config.update({region : 'ap-southeast-1	'});
 
 const id = process.env.AWS_KEYID
 const secretKey = process.env.AWS_SECRETKEY
@@ -26,7 +25,7 @@ app.get('/listbucket', (req,res) => {
     });
 })
 
-app.get('/employee/sabar', (req,res,next) => {
+app.get('/department', (req,res,next) => {
     dbConn.query('SELECT * FROM department ', function (err, result, field) {
         res.json(result);
     });
