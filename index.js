@@ -2,6 +2,29 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const dbConn = require('./dbConn');
+const AWS = require('aws-sdk');
+const dotenv = require('dotenv');
+
+dotenv.config();
+AWS.config.update({region : 'ap-southeast-1	'});
+
+const id = process.env.AWS_KEYID
+const secretKey = process.env.AWS_SECRETKEY
+
+const s3 = new AWS.S3({
+    accessKeyId: id,
+    secretAccessKey : secretKey
+});
+
+app.get('/listbucket', (req,res) => {
+    s3.listBuckets(function(err, data){
+        if(err){
+            res.send(err)
+        }else {
+            res.send(data)
+        }
+    });
+})
 
 app.get('/employee/sabar', (req,res,next) => {
     dbConn.query('SELECT * FROM department ', function (err, result, field) {
